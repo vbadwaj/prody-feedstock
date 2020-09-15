@@ -26,7 +26,7 @@ requirements:
     - numpy >=1.10
   run:
     - python
-    - biopython <=1.76  # kdtree import fails with newer versions
+    - biopython
     - pyparsing
     - setuptools  # requires pkg_resources at runtime
     - scipy
