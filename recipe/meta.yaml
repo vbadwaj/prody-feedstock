@@ -1,5 +1,5 @@
 {% set name = "ProDy" %}
-{% set version = "1.10.10" %}
+{% set version = "1.10.11" %}
 
 package:
   name: {{ name|lower }}
@@ -7,11 +7,11 @@ package:
 
 source:
   url: https://github.com/prody/ProDy/archive/v{{ version }}.tar.gz
-  sha256: b1853250d21b05276ca90a938d48daa7fdc3753c2bb82c5c61402b1c705fa880
+  sha256: 9289d073a045b484ad60e365ca75be0880b19e3049cc6519043bf93303305f14
 
 build:
-  number: 1
-  script: "{{ PYTHON }} -m pip install . -vv"
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv
   entry_points:
     - prody = prody.apps:prody_main
     - evol = prody.apps:evol_main
@@ -53,8 +53,7 @@ about:
   license: MIT
   license_family: MIT
   license_file: LICENSE.rst
-  summary: 'ProDy is a free and open-source Python package for protein structure, dynamics, and sequence analysis, developed by the
-    Bahar lab.'
+  summary: ProDy is a free and open-source Python package for protein structure, dynamics, and sequence analysis, developed by the Bahar lab.
   description: |
     ProDy is a free and open-source Python package for protein 
     structure, dynamics, and sequence analysis, developed by the
