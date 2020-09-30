@@ -27,7 +27,9 @@ requirements:
   run:
     - python
     - biopython
+    - matplotlib-base
     - pyparsing
+    - requests
     - setuptools  # requires pkg_resources at runtime
     - scipy
     - {{ pin_compatible('numpy') }}
