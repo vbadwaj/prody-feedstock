@@ -1,5 +1,5 @@
 {% set name = "ProDy" %}
-{% set version = "2.1.0" %}
+{% set version = "2.1.1" %}
 
 package:
   name: {{ name|lower }}
@@ -7,7 +7,7 @@ package:
 
 source:
   url: https://github.com/prody/ProDy/archive/v{{ version }}.tar.gz
-  sha256: b136bb6d1da9ddd04b045d6d9eba5886d730efe645630a368408a5a07452684b
+  sha256: d6f8999234de19e0fccb36e6d4014e58611767cda1e31d1a4c55519ea2417478
 
 build:
   number: 0
