@@ -22,7 +22,7 @@ requirements:
     - {{ compiler('cxx') }}
   host:
     - python
-    - pip
+    - pip !=21.1
     - numpy >=1.10
   run:
     - python
