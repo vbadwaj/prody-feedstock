@@ -51,7 +51,7 @@ test:
     - prody.trajectory
 
 about:
-  home: http://prody.csb.pitt.edu/
+  home: http://www.bahargroup.org/prody/
   license: MIT
   license_family: MIT
   license_file: LICENSE.rst
@@ -64,7 +64,7 @@ about:
     and flexible ProDy API is for interactive usage as well as 
     application development. ProDy also comes with several analysis 
     applications and a graphical user interface for visual analysis.
-  doc_url: http://prody.csb.pitt.edu/manual/
+  doc_url: http://www.bahargroup.org/prody/manual/
   dev_url: https://github.com/prody/ProDy
 
 extra:
