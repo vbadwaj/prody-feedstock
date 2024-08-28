@@ -21,14 +21,14 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
   host:
-    - python
+    - python <3.12
     - pip <21.1
-    - numpy >=1.10
+    - numpy >=1.10,<1.25
   run:
     - python
     - biopython
     - matplotlib-base
-    - pyparsing
+    - pyparsing <=3.1.1
     - requests
     - setuptools  # requires pkg_resources at runtime
     - scipy
