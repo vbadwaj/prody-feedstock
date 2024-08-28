@@ -21,8 +21,9 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
+    - noarch: python
   host:
-    - python
+    - python <3.12
     - pip <21.1
     - setuptools
     - numpy >=1.10,<1.25
