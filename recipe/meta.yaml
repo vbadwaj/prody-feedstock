@@ -28,7 +28,7 @@ requirements:
     - setuptools
     - numpy >=1.10,<1.25
   run:
-    - python
+    - python >3.7,<3.12
     - biopython
     - matplotlib-base
     - pyparsing <=3.1.1
