@@ -23,7 +23,7 @@ requirements:
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
   host:
-    - python <3.12
+    - python >3.7,<3.12
     - pip <21.1
     - setuptools
     - numpy >=1.10,<1.25
