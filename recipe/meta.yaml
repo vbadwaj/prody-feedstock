@@ -48,6 +48,22 @@ requirements:
     - biopython
     - pip
 
+test:
+  commands:
+    - prody --help
+    - evol --help
+  imports:
+    - prody
+    - prody.atomic
+    - prody.database
+    - prody.dynamics
+    - prody.ensemble
+    - prody.kdtree
+    - prody.measure
+    - prody.proteins
+    - prody.sequence
+    - prody.trajectory
+
 about:
   home: http://www.bahargroup.org/prody/
   license: MIT
