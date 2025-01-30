@@ -28,10 +28,4 @@ stages:
   condition: and(succeeded(), eq(dependencies.Check.outputs['Skip.result.start_main'], 'true'))
   dependsOn: Check
   jobs:
-<<<<<<< HEAD
     - template: ./.azure-pipelines/azure-pipelines-linux.yml
-    - template: ./.azure-pipelines/azure-pipelines-osx.yml
-    - template: ./.azure-pipelines/azure-pipelines-win.yml
-=======
-    - template: ./.azure-pipelines/azure-pipelines-linux.yml
->>>>>>> cc9c703b2c3ead2ce7cb2e7257f8df26b8383109
