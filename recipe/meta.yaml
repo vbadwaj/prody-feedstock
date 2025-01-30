@@ -23,6 +23,16 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
+    - python >={{ python_min }},<3.12
+    - biopython
+    - requests
+    - setuptools  # requires pkg_resources at runtime
+    - scipy
+    - pyparsing <=3.1.1
+    - conda-build
+    - gfortran
+    - gxx
+    - pip
   host:
     - python {{ python_min }}
     - pip <21.1
@@ -31,31 +41,31 @@ requirements:
     - scipy
     - pyparsing <=3.1.1
     - biopython
+    - requests
   run:
     - python >={{ python_min }},<3.12
-    - biopython
-    - matplotlib-base
-    - pyparsing <=3.1.1
-    - requests
-    - setuptools  # requires pkg_resources at runtime
-    - scipy
-    - pyparsing <=3.1.1
-    - conda-build
-    - biopython
-    - gfortran
-    - gxx
-    - pip
-  run:
-    - python >3.7,<=3.12
     - numpy >=1.10,<1.25
     - scipy
     - pyparsing <=3.1.1
     - biopython
+    - gfortran
+    - gxx
     - pip
+    - setuptools
+    - requests
 
 test:
   requires:
     - python {{ python_min }}
+    - numpy >=1.10,<1.25
+    - scipy
+    - pyparsing <=3.1.1
+    - biopython
+    - gfortran
+    - gxx
+    - pip
+    - setuptools
+    - requests
   commands:
     - prody --help
     - evol --help
