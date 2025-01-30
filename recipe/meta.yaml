@@ -1,57 +1,52 @@
 {% set name = "ProDy" %}
-{% set version = "2.4.1" %}
+{% set version = "2.5.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/prody/ProDy/archive/v{{ version }}.tar.gz
-  sha256: 97b1b8b8100e77655db553e4dbc28ff7db23336e538ddf39d3bad8434aed1e32
-
-build:
-  noarch: python
-  number: 1
-  script: {{ PYTHON }} -m pip install . -vv
-  entry_points:
-    - prody = prody.apps:prody_main
-    - evol = prody.apps:evol_main
+  git_url: https://github.com/jamesmkrieger/{{ name }}.git
+  git_tag: install_hpb
 
 requirements:
   build:
+    # If your project compiles code (such as a C extension) then add the required compilers as separate entries here.
+    # Compilers are named 'c', 'cxx', 'fortran', among others
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ stdlib("c") }}
-  host:
-    - python >3.7,<3.12
-    - pip <21.1
+    - {{ compiler('gfortran') }}
+    # this is necessary for all compiled recipes
+    - {{ stdlib('c') }}
+  
+    - python >3.7,<=3.12
     - setuptools
     - numpy >=1.10,<1.25
-  run:
-    - python >3.7,<3.12
-    - biopython
-    - matplotlib-base
-    - pyparsing <=3.1.1
-    - requests
-    - setuptools  # requires pkg_resources at runtime
     - scipy
-    - {{ pin_compatible('numpy') }}
-
-test:
-  commands:
-    - prody --help
-    - evol --help
-  imports:
-    - prody
-    - prody.atomic
-    - prody.database
-    - prody.dynamics
-    - prody.ensemble
-    - prody.kdtree
-    - prody.measure
-    - prody.proteins
-    - prody.sequence
-    - prody.trajectory
+    - pyparsing <=3.1.1
+    - conda-build
+    - biopython
+    - gfortran
+    - gxx
+    - pip
+  host:
+    - python >3.7,<=3.12
+    - setuptools
+    - numpy >=1.10,<1.25
+    - scipy
+    - pyparsing <=3.1.1
+    - conda-build
+    - biopython
+    - gfortran
+    - gxx
+    - pip
+  run:
+    - python >3.7,<=3.12
+    - numpy >=1.10,<1.25
+    - scipy
+    - pyparsing <=3.1.1
+    - biopython
+    - pip
 
 about:
   home: http://www.bahargroup.org/prody/
