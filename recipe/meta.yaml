@@ -7,7 +7,7 @@ package:
 
 source:
   git_url: https://github.com/jamesmkrieger/{{ name }}.git
-  git_tag: install_hpb
+  git_rev: fa3b1a9
 
 requirements:
   build:
