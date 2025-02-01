@@ -1,45 +1,71 @@
-{% set name = "ProDy" %}
-{% set version = "2.4.1" %}
+{% set name = "prody" %}
+{% set version = "2.5.0" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  url: https://github.com/prody/ProDy/archive/v{{ version }}.tar.gz
-  sha256: 97b1b8b8100e77655db553e4dbc28ff7db23336e538ddf39d3bad8434aed1e32
+  git_url: https://github.com/jamesmkrieger/{{ name }}.git
+  git_rev: fa3b1a9
 
 build:
   noarch: python
-  number: 2
-  script: {{ PYTHON }} -m pip install . -vv
+  number: 0
   entry_points:
     - prody = prody.apps:prody_main
     - evol = prody.apps:evol_main
 
 requirements:
   build:
+    # If your project compiles code (such as a C extension) then add the required compilers as separate entries here.
+    # Compilers are named 'c', 'cxx', 'fortran', among others
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
+    - python >={{ python_min }},<3.12
+    - biopython
+    - requests
+    - setuptools  # requires pkg_resources at runtime
+    - scipy
+    - pyparsing <=3.1.1
+    - conda-build
+    - gfortran
+    - gxx
+    - pip
   host:
     - python {{ python_min }}
     - pip <21.1
     - setuptools
     - numpy >=1.10,<1.25
+    - scipy
+    - pyparsing <=3.1.1
+    - biopython
+    - requests
   run:
     - python >={{ python_min }},<3.12
-    - biopython
-    - matplotlib-base
-    - pyparsing <=3.1.1
-    - requests
-    - setuptools  # requires pkg_resources at runtime
+    - numpy >=1.10,<1.25
     - scipy
-    - {{ pin_compatible('numpy') }}
+    - pyparsing <=3.1.1
+    - biopython
+    - gfortran
+    - gxx
+    - pip
+    - setuptools
+    - requests
 
 test:
   requires:
     - python {{ python_min }}
+    - numpy >=1.10,<1.25
+    - scipy
+    - pyparsing <=3.1.1
+    - biopython
+    - gfortran
+    - gxx
+    - pip
+    - setuptools
+    - requests
   commands:
     - prody --help
     - evol --help
