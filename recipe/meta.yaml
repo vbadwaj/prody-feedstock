@@ -68,8 +68,6 @@ test:
     - setuptools
     - requests
     - pytest
-  source_files:
-    - prody/tests
   commands:
     - prody --help
     - evol --help
