@@ -6,8 +6,8 @@ package:
   version: {{ version }}
 
 source:
-  git_url: https://github.com/prody/{{ name }}.git
-  git_rev: 577198f
+  git_url: https://github.com/jamesmkrieger/{{ name }}.git
+  git_rev: ae61774
 
 build:
   noarch: python
