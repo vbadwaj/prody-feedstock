@@ -7,11 +7,11 @@ package:
 
 source:
   git_url: https://github.com/jamesmkrieger/{{ name }}.git
-  git_rev: fa3b1a9
+  git_rev: ae61774
 
 build:
   noarch: python
-  number: 0
+  number: 1
   entry_points:
     - prody = prody.apps:prody_main
     - evol = prody.apps:evol_main
@@ -33,6 +33,7 @@ requirements:
     - gfortran
     - gxx
     - pip
+    - numpy >=1.10,<1.25
   host:
     - python {{ python_min }}
     - pip <21.1
@@ -66,6 +67,7 @@ test:
     - pip
     - setuptools
     - requests
+    - pytest
   commands:
     - prody --help
     - evol --help
