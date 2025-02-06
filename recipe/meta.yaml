@@ -7,11 +7,11 @@ package:
 
 source:
   git_url: https://github.com/jamesmkrieger/{{ name }}.git
-  git_rev: ae61774
+  git_rev: 121619c
 
 build:
   noarch: python
-  number: 1
+  number: 2
   entry_points:
     - prody = prody.apps:prody_main
     - evol = prody.apps:evol_main
@@ -68,6 +68,7 @@ test:
     - setuptools
     - requests
     - pytest
+    - pytest-xprocess
   commands:
     - prody --help
     - evol --help
