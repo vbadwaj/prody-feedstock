@@ -10,7 +10,7 @@ source:
   git_rev: 7d21dc4
 
 build:
-  noarch: python
+  noarch: python >={{ python_min }},<3.12
   number: 3
   entry_points:
     - prody = prody.apps:prody_main
@@ -20,6 +20,10 @@ requirements:
   build:
     # If your project compiles code (such as a C extension) then add the required compilers as separate entries here.
     # Compilers are named 'c', 'cxx', 'fortran', among others
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib("c") }}
     - python >={{ python_min }},<3.12
     - biopython
     - requests
@@ -27,8 +31,6 @@ requirements:
     - scipy
     - pyparsing <=3.1.1
     - conda-build
-    - gfortran
-    - gxx
     - pip
     - numpy >=1.10,<1.25
   host:
@@ -42,12 +44,14 @@ requirements:
     - requests
   run:
     - python >={{ python_min }},<3.12
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib("c") }}
     - numpy >=1.10,<1.25
     - scipy
     - pyparsing <=3.1.1
     - biopython
-    - gfortran
-    - gxx
     - pip
     - setuptools
     - requests
@@ -59,8 +63,10 @@ test:
     - scipy
     - pyparsing <=3.1.1
     - biopython
-    - gfortran
-    - gxx
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib("c") }}
     - pip
     - setuptools
     - requests
