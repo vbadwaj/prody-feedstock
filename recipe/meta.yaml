@@ -7,11 +7,11 @@ package:
 
 source:
   git_url: https://github.com/jamesmkrieger/{{ name }}.git
-  git_rev: 121619c
+  git_rev: 7d21dc4
 
 build:
   noarch: python
-  number: 2
+  number: 4
   entry_points:
     - prody = prody.apps:prody_main
     - evol = prody.apps:evol_main
@@ -20,20 +20,21 @@ requirements:
   build:
     # If your project compiles code (such as a C extension) then add the required compilers as separate entries here.
     # Compilers are named 'c', 'cxx', 'fortran', among others
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ stdlib("c") }}
-    - python >={{ python_min }},<3.12
+    - python >={{ python_min }},<3.13
     - biopython
     - requests
     - setuptools  # requires pkg_resources at runtime
     - scipy
     - pyparsing <=3.1.1
     - conda-build
-    - gfortran
-    - gxx
     - pip
     - numpy >=1.10,<1.25
+    - gfortran
+    - gcc
+    - gxx
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
   host:
     - python {{ python_min }}
     - pip <21.1
@@ -44,13 +45,17 @@ requirements:
     - biopython
     - requests
   run:
-    - python >={{ python_min }},<3.12
+    - python >={{ python_min }},<3.13
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ stdlib("c") }}
+    - gfortran
+    - gcc
+    - gxx
     - numpy >=1.10,<1.25
     - scipy
     - pyparsing <=3.1.1
     - biopython
-    - gfortran
-    - gxx
     - pip
     - setuptools
     - requests
@@ -63,7 +68,6 @@ test:
     - pyparsing <=3.1.1
     - biopython
     - gfortran
-    - gxx
     - pip
     - setuptools
     - requests
