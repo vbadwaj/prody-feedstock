@@ -31,7 +31,7 @@ requirements:
     - numpy >=1.10,<1.25
     - gfortran
     - gcc
-    - g++
+    - gxx
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ stdlib("c") }}
@@ -51,7 +51,7 @@ requirements:
     - {{ stdlib("c") }}
     - gfortran
     - gcc
-    - g++
+    - gxx
     - numpy >=1.10,<1.25
     - scipy
     - pyparsing <=3.1.1
