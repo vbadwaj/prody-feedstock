@@ -20,11 +20,7 @@ requirements:
   build:
     # If your project compiles code (such as a C extension) then add the required compilers as separate entries here.
     # Compilers are named 'c', 'cxx', 'fortran', among others
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - {{ stdlib("c") }}
-    - python >={{ python_min }},<3.12
+    - python >={{ python_min }},<3.13
     - biopython
     - requests
     - setuptools  # requires pkg_resources at runtime
@@ -33,6 +29,7 @@ requirements:
     - conda-build
     - pip
     - numpy >=1.10,<1.25
+    - gfortran
   host:
     - python {{ python_min }}
     - pip <21.1
@@ -43,11 +40,8 @@ requirements:
     - biopython
     - requests
   run:
-    - python >={{ python_min }},<3.12
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - {{ stdlib("c") }}
+    - python >={{ python_min }},<3.13
+    - gfortran
     - numpy >=1.10,<1.25
     - scipy
     - pyparsing <=3.1.1
@@ -63,10 +57,7 @@ test:
     - scipy
     - pyparsing <=3.1.1
     - biopython
-    - {{ compiler('c') }}
-    - {{ compiler('cxx') }}
-    - {{ compiler('fortran') }}
-    - {{ stdlib("c") }}
+    - gfortran
     - pip
     - setuptools
     - requests

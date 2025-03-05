@@ -6,5 +6,5 @@ c++ -shared -Wl,-soname,hpb.so -o hpb.so hpbmodule.o reg_tet.o -lgfortran
 cp hpb.so ../
 
 cd -
-$PYTHON setup.py build_ext --inplace --force
+$PYTHON setup.py build_ext --force
 $PYTHON setup.py install --single-version-externally-managed --record=record.txt
