@@ -45,6 +45,10 @@ requirements:
     - pyparsing <=3.1.1
     - biopython
     - requests
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib("c") }}  # [build_platform != target_platform]
     - libgfortran5
   run:
     - python 
