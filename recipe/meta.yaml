@@ -1,58 +1,59 @@
 {% set name = "prody" %}
-{% set version = "2.5.0" %}
+{% set version = "2.6.0" %}
+{% set python_min = "3.10" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  git_url: https://github.com/jamesmkrieger/{{ name }}.git
-  git_rev: 7d21dc4
+  git_url: https://github.com/prody/{{ name }}.git
+  git_tag: v2.6.0
+
 
 build:
-  noarch: python
-  number: 4
+  number: 0
   entry_points:
     - prody = prody.apps:prody_main
     - evol = prody.apps:evol_main
+    
 
 requirements:
   build:
-    # If your project compiles code (such as a C extension) then add the required compilers as separate entries here.
-    # Compilers are named 'c', 'cxx', 'fortran', among others
-    - python >={{ python_min }},<3.13
+
+    - python 
     - biopython
     - requests
-    - setuptools  # requires pkg_resources at runtime
+    - setuptools
     - scipy
     - pyparsing <=3.1.1
     - conda-build
     - pip
-    - numpy >=1.10,<1.25
-    - gfortran
-    - gcc
-    - gxx
+    - numpy >=1.10
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ stdlib("c") }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib("c") }}  # [build_platform != target_platform]
+    - libgfortran5
+  
+
   host:
-    - python {{ python_min }}
-    - pip <21.1
+    - python 
+    - pip >=22
     - setuptools
-    - numpy >=1.10,<1.25
+    - numpy >=1.10
     - scipy
     - pyparsing <=3.1.1
     - biopython
     - requests
-  run:
-    - python >={{ python_min }},<3.13
-    - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - {{ stdlib("c") }}
-    - gfortran
-    - gcc
-    - gxx
-    - numpy >=1.10,<1.25
+    - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib("c") }}  # [build_platform != target_platform]
+    - libgfortran5
+  run:
+    - python 
+    - numpy >=1.10
     - scipy
     - pyparsing <=3.1.1
     - biopython
@@ -62,12 +63,11 @@ requirements:
 
 test:
   requires:
-    - python {{ python_min }}
-    - numpy >=1.10,<1.25
+    - python 
+    - numpy >=1.10
     - scipy
     - pyparsing <=3.1.1
     - biopython
-    - gfortran
     - pip
     - setuptools
     - requests
@@ -82,11 +82,13 @@ test:
     - prody.database
     - prody.dynamics
     - prody.ensemble
+    - prody.kdtree.kdtree
     - prody.kdtree
     - prody.measure
     - prody.proteins
     - prody.sequence
     - prody.trajectory
+
 
 about:
   home: http://www.bahargroup.org/prody/
@@ -107,7 +109,7 @@ about:
 
 extra:
   recipe-maintainers:
-    - vbadwaj
     - AnthonyBogetti
     - jamesmkrieger
     - simonbray
+    - vbadwaj

@@ -26,11 +26,65 @@ Current build status
 ====================
 
 
-<table><tr><td>All platforms:</td>
+<table>
+    
+  <tr>
+    <td>Azure</td>
     <td>
-      <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
-        <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main">
-      </a>
+      <details>
+        <summary>
+          <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+            <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main">
+          </a>
+        </summary>
+        <table>
+          <thead><tr><th>Variant</th><th>Status</th></tr></thead>
+          <tbody><tr>
+              <td>linux_64_python3.10</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_python3.10" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_64_python3.11</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_python3.11" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>linux_64_python3.12</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=linux&configuration=linux%20linux_64_python3.12" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_python3.10</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.10" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_python3.11</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.11" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_64_python3.12</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.12" alt="variant">
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </details>
     </td>
   </tr>
 </table>
@@ -156,6 +210,7 @@ In order to produce a uniquely identifiable distribution:
 Feedstock Maintainers
 =====================
 
+* [@AnthonyBogetti](https://github.com/AnthonyBogetti/)
 * [@jamesmkrieger](https://github.com/jamesmkrieger/)
 * [@simonbray](https://github.com/simonbray/)
 
