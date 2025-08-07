@@ -7,6 +7,3 @@ conda_build:
 
 provider:
   win_64: None
-
-# Only build for Python 3.10 and newer
-min_py_ver: "3.10"
