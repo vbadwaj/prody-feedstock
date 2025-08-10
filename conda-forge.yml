@@ -1,9 +1,8 @@
 conda_forge_output_validation: true
-github:
-  branch_name: main
-  tooling_branch_name: main
-conda_build:
-  pkg_format: '2'
-
 provider:
-  win_64: None
+  linux_64: azure
+  osx: azure
+  win: None
+build_platform:
+  osx_arm64: osx_64
+test: native_and_emulated
