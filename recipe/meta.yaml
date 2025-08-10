@@ -33,6 +33,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
+    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
     - {{ stdlib("c") }}  # [build_platform != target_platform]
     - libgfortran5
   
