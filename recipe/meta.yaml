@@ -30,12 +30,13 @@ requirements:
     - conda-build
     - pip
     - numpy >=1.10
+    - cross-python_{{ target_platform }}        # [build_platform != target_platform]
+    - {{ stdlib("c") }}                         # [build_platform != target_platform]
+    - libgfortran5                              # [linux]
     # - {{ compiler('c') }}
     # - {{ compiler('cxx') }}
     # - {{ compiler('fortran') }}
-    - cross-python_{{ target_platform }}  # [build_platform != target_platform]
-    # - {{ stdlib("c") }}  # [build_platform != target_platform]
-    # - libgfortran5
+     
   
 
   host:
@@ -51,7 +52,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('fortran') }}
     # - {{ stdlib("c") }}  # [build_platform != target_platform]
-    # - libgfortran5
+     - libgfortran                                        # [osx] runtime
   run:
     - python 
     - numpy >=1.10
@@ -61,6 +62,8 @@ requirements:
     - pip
     - setuptools
     - requests
+    - libgfortran     # [osx]
+    - libgfortran5    # [linux]
 
 test:
   requires:

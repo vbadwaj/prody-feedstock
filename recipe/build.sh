@@ -45,57 +45,61 @@
 # cd "${SRC_DIR}"
 # "${PYTHON}" -m pip install . --no-deps --no-build-isolation -vv
 #!/usr/bin/env bash
-set -ex
+#!/usr/bin/env bash
+set -Eeuo pipefail
+set -x
 
-echo "Target Platform: ${target_platform}"
-echo "Build Platform: ${build_platform}"
+echo "BUILD=${BUILD:-?}  HOST=${HOST:-?}"
+echo "BUILD_PREFIX=${BUILD_PREFIX:-?}"
+echo "PREFIX=${PREFIX:-?}"
+echo "target_platform=${target_platform:-?}  build_platform=${build_platform:-?}"
+echo "CC=$CC"
+echo "CXX=$CXX"
+echo "FC(initial)=${FC:-<unset>}"
 
-export CFLAGS="${CFLAGS} -D__NO_FLOAT16"
-export CPPFLAGS="${CPPFLAGS} -D__NO_FLOAT16"
-export CXXFLAGS="${CXXFLAGS} -D__NO_FLOAT16"
-
-cd "${SRC_DIR}/prody/proteins/hpbmodule"
-
-if [ -z "${FC}" ]; then
-  echo "Fortran compiler (\$FC) not set. Aborting."
-  exit 1
+if [[ -n "${BUILD_PREFIX:-}" && -n "${HOST:-}" && -x "${BUILD_PREFIX}/bin/${HOST}-gfortran" ]]; then
+  export FC="${BUILD_PREFIX}/bin/${HOST}-gfortran"
 fi
 
-"${FC}" -O3 -fPIC -c reg_tet.f
+echo "FC(using)=$FC"
+command -v "$FC"
+"$FC" --version || true
+file "$(command -v "$FC")" || true
 
-PYTHON_INCLUDE="$(${PYTHON} -c 'from distutils.sysconfig import get_python_inc; print(get_python_inc())')"
-PYTHON_LIBDIR="$(${PYTHON} -c 'import sysconfig; print(sysconfig.get_config_var("LIBDIR"))')"
-PYTHON_LIB="$(${PYTHON} -c 'import sysconfig; print(sysconfig.get_config_var("LDLIBRARY"))')"
-PYTHON_LIB_NAME="$(basename "${PYTHON_LIB}" | sed -E 's/^lib(.*)\.(so|dylib|a)$/\1/')"
+export CFLAGS="${CFLAGS:-} -D__NO_FLOAT16"
+export CPPFLAGS="${CPPFLAGS:-} -D__NO_FLOAT16"
+export CXXFLAGS="${CXXFLAGS:-} -D__NO_FLOAT16"
 
-"${CXX}" -O3 -g -fPIC -c hpbmodule.cpp -o hpbmodule.o -I"${PYTHON_INCLUDE}"
+pushd "${SRC_DIR}/prody/proteins/hpbmodule"
 
-if [[ "${target_platform}" == "osx-arm64" ]]; then
-  "${CXX}" -dynamiclib -o hpb.so hpbmodule.o reg_tet.o \
-    -L"${PREFIX}/lib" \
-    -L"${PYTHON_LIBDIR}" -l"${PYTHON_LIB_NAME}" \
-    -lgfortran \
-    -Wl,-rpath,"${PREFIX}/lib" \
-    -Wl,-rpath,"${PYTHON_LIBDIR}" \
-    -undefined dynamic_lookup
-elif [[ "${target_platform}" == "osx-64" ]]; then
-  "${CXX}" -dynamiclib -o hpb.so hpbmodule.o reg_tet.o \
-    -L"${PREFIX}/lib" \
-    -L"${PYTHON_LIBDIR}" -l"${PYTHON_LIB_NAME}" \
-    -lgfortran \
-    -Wl,-rpath,"${PREFIX}/lib" \
-    -Wl,-rpath,"${PYTHON_LIBDIR}" \
-    -undefined dynamic_lookup
+"$FC" -O3 -fPIC -c reg_tet.f
+
+PY_INC="$("$PYTHON" - <<'PY'
+import sysconfig
+print(sysconfig.get_paths()["include"])
+PY
+)"
+
+"$CXX" -O3 -g -fPIC -I"$PY_INC" -c hpbmodule.cpp -o hpbmodule.o
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  "$CXX" -dynamiclib -o hpb.so hpbmodule.o reg_tet.o \
+        ${LDFLAGS:-} \
+        -lgfortran \
+        -Wl,-rpath,"${PREFIX}/lib" \
+        -undefined dynamic_lookup
+  (command -v otool >/dev/null && otool -L hpb.so) || true
 else
-  "${CXX}" -shared -Wl,-soname,hpb.so -o hpb.so hpbmodule.o reg_tet.o \
-    -L"${PREFIX}/lib" \
-    -L"${PYTHON_LIBDIR}" -l"${PYTHON_LIB_NAME}" \
-    -lgfortran \
-    -Wl,-rpath,"${PREFIX}/lib" \
-    -Wl,-rpath,"${PYTHON_LIBDIR}"
+  "$CXX" -shared -o hpb.so hpbmodule.o reg_tet.o \
+        ${LDFLAGS:-} \
+        -lgfortran \
+        -Wl,-rpath,"${PREFIX}/lib"
+  (command -v readelf >/dev/null && readelf -d hpb.so | grep RPATH || true)
 fi
 
-mv hpb.so ../
+mv -v hpb.so ../
+popd
 
-cd "${SRC_DIR}"
-"${PYTHON}" -m pip install . --no-deps --no-build-isolation -vv
+pushd "${SRC_DIR}"
+"$PYTHON" -m pip install . --no-deps --no-build-isolation -vv
+popd
