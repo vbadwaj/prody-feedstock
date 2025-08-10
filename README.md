@@ -13,15 +13,6 @@ Development: https://github.com/prody/ProDy
 
 Documentation: http://www.bahargroup.org/prody/manual/
 
-ProDy is a free and open-source Python package for protein
-structure, dynamics, and sequence analysis, developed by the
-Bahar lab. It allows for comparative analysis and modeling of
-protein structural  dynamics and sequence co-evolution. Fast
-and flexible ProDy API is for interactive usage as well as
-application development. ProDy also comes with several analysis
-applications and a graphical user interface for visual analysis.
-
-
 Current build status
 ====================
 
@@ -79,6 +70,27 @@ Current build status
               <td>
                 <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
                   <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_64_python3.12" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_python3.10</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.10" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_python3.11</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.11" alt="variant">
+                </a>
+              </td>
+            </tr><tr>
+              <td>osx_arm64_python3.12</td>
+              <td>
+                <a href="https://dev.azure.com/conda-forge/feedstock-builds/_build/latest?definitionId=10716&branchName=main">
+                  <img src="https://dev.azure.com/conda-forge/feedstock-builds/_apis/build/status/prody-feedstock?branchName=main&jobName=osx&configuration=osx%20osx_arm64_python3.12" alt="variant">
                 </a>
               </td>
             </tr>

@@ -44,3 +44,5 @@ mv hpb.so ../
 # Return to the source root and install the package via pip
 cd "${SRC_DIR}"
 "${PYTHON}" -m pip install . --no-deps --no-build-isolation -vv
+!/usr/bin/env bash
+!/usr/bin/env bash
