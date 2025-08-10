@@ -1,82 +1,48 @@
-# #!/usr/bin/env bash
-# set -ex
-
-# # Add compilation flags for disabling float16
-# export CFLAGS="${CFLAGS} -D__NO_FLOAT16"
-# export CPPFLAGS="${CPPFLAGS} -D__NO_FLOAT16"
-
-# # Change into the HPB module directory
-# cd "${SRC_DIR}/prody/proteins/hpbmodule"
-
-# # Verify Fortran compiler is set
-# if [ -z "${FC}" ]; then
-#   echo "Fortran compiler (\$FC) not set. Aborting."
-#   exit 1
-# fi
-
-# # Compile the Fortran source
-# "${FC}" -O3 -fPIC -c reg_tet.f
-
-# # Gather Python include & library paths
-# PYTHON_INCLUDE="$(${PYTHON} -c 'from distutils.sysconfig import get_python_inc; print(get_python_inc())')"
-# PYTHON_LIBDIR="$(${PYTHON} -c 'import sysconfig; print(sysconfig.get_config_var("LIBDIR"))')"
-# PYTHON_LIB="$(${PYTHON} -c 'import sysconfig; print(sysconfig.get_config_var("LDLIBRARY"))')"
-# PYTHON_LIB_NAME="$(basename "${PYTHON_LIB}" | sed -E 's/^lib(.*)\.(so|dylib|a)$/\1/')"
-
-# # Compile the C++ wrapper using the conda-provided compiler
-# "${CXX}" -O3 -g -fPIC -c hpbmodule.cpp -o hpbmodule.o -I"${PYTHON_INCLUDE}"
-
-# # Ensure linker can find libraries
-# export LIBRARY_PATH="${PREFIX}/lib:${PYTHON_LIBDIR}:${LIBRARY_PATH}"
-
-# # Link into a shared library (.so/.dylib)
-# if [[ "$(uname)" == "Darwin" ]]; then
-#   "${CXX}" -dynamiclib -o hpb.so hpbmodule.o reg_tet.o \
-#     -L"${PYTHON_LIBDIR}" -l"${PYTHON_LIB_NAME}" -lgfortran -undefined dynamic_lookup
-# else
-#   "${CXX}" -shared -Wl,-soname,hpb.so -o hpb.so hpbmodule.o reg_tet.o \
-#     -L"${PYTHON_LIBDIR}" -l"${PYTHON_LIB_NAME}" -lgfortran
-# fi
-
-# # Move the shared library back into the package directory
-# mv hpb.so ../
-
-# # Return to the source root and install the package via pip
-# cd "${SRC_DIR}"
-# "${PYTHON}" -m pip install . --no-deps --no-build-isolation -vv
-#!/usr/bin/env bash
 #!/usr/bin/env bash
 set -ex
-echo "BUILD=${BUILD:-?} HOST=${HOST:-?} target=${target_platform:-?} build=${build_platform:-?}"
 
-# Use cross wrapper if present
-if [[ -n "${BUILD_PREFIX:-}" && -n "${HOST:-}" && -x "${BUILD_PREFIX}/bin/${HOST}-gfortran" ]]; then
-  export FC="${BUILD_PREFIX}/bin/${HOST}-gfortran"
+# Add compilation flags for disabling float16
+export CFLAGS="${CFLAGS} -D__NO_FLOAT16"
+export CPPFLAGS="${CPPFLAGS} -D__NO_FLOAT16"
+
+# Change into the HPB module directory
+cd "${SRC_DIR}/prody/proteins/hpbmodule"
+
+# Verify Fortran compiler is set
+if [ -z "${FC}" ]; then
+  echo "Fortran compiler (\$FC) not set. Aborting."
+  exit 1
 fi
 
-export CFLAGS="${CFLAGS:-} -D__NO_FLOAT16"
-export CPPFLAGS="${CPPFLAGS:-} -D__NO_FLOAT16"
-export CXXFLAGS="${CXXFLAGS:-} -D__NO_FLOAT16"
+# Compile the Fortran source
+"${FC}" -O3 -fPIC -c reg_tet.f
 
-pushd "${SRC_DIR}/prody/proteins/hpbmodule"
-"$FC" -O3 -fPIC -c reg_tet.f
+# Gather Python include & library paths
+PYTHON_INCLUDE="$(${PYTHON} -c 'from distutils.sysconfig import get_python_inc; print(get_python_inc())')"
+PYTHON_LIBDIR="$(${PYTHON} -c 'import sysconfig; print(sysconfig.get_config_var("LIBDIR"))')"
+PYTHON_LIB="$(${PYTHON} -c 'import sysconfig; print(sysconfig.get_config_var("LDLIBRARY"))')"
+PYTHON_LIB_NAME="$(basename "${PYTHON_LIB}" | sed -E 's/^lib(.*)\.(so|dylib|a)$/\1/')"
 
-PY_INC="$("$PYTHON" - <<'PY'
-import sysconfig; print(sysconfig.get_paths()["include"])
-PY
-)"
-"$CXX" -O3 -g -fPIC -I"$PY_INC" -c hpbmodule.cpp -o hpbmodule.o
+# Compile the C++ wrapper using the conda-provided compiler
+"${CXX}" -O3 -g -fPIC -c hpbmodule.cpp -o hpbmodule.o -I"${PYTHON_INCLUDE}"
 
+# Ensure linker can find libraries
+export LIBRARY_PATH="${PREFIX}/lib:${PYTHON_LIBDIR}:${LIBRARY_PATH}"
+
+# Link into a shared library (.so/.dylib)
 if [[ "$(uname)" == "Darwin" ]]; then
-  "$CXX" -dynamiclib -o hpb.so hpbmodule.o reg_tet.o \
-        -lgfortran -Wl,-rpath,"${PREFIX}/lib" -undefined dynamic_lookup
+  "${CXX}" -dynamiclib -o hpb.so hpbmodule.o reg_tet.o \
+    -L"${PYTHON_LIBDIR}" -l"${PYTHON_LIB_NAME}" -lgfortran -undefined dynamic_lookup
 else
-  "$CXX" -shared -o hpb.so hpbmodule.o reg_tet.o \
-        -lgfortran -Wl,-rpath,"${PREFIX}/lib"
+  "${CXX}" -shared -Wl,-soname,hpb.so -o hpb.so hpbmodule.o reg_tet.o \
+    -L"${PYTHON_LIBDIR}" -l"${PYTHON_LIB_NAME}" -lgfortran
 fi
-mv -v hpb.so ../
-popd
 
-pushd "${SRC_DIR}"
-"$PYTHON" -m pip install . --no-deps --no-build-isolation -vv
-popd
+# Move the shared library back into the package directory
+mv hpb.so ../
+
+# Return to the source root and install the package via pip
+cd "${SRC_DIR}"
+"${PYTHON}" -m pip install . --no-deps --no-build-isolation -vv
+!/usr/bin/env bash
+!/usr/bin/env bash
