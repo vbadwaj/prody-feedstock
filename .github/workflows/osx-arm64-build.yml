@@ -1,0 +1,66 @@
+name: osx-arm64 conda-build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  macos-arm64:
+    runs-on: macos-14   # Apple Silicon
+    strategy:
+      fail-fast: false
+      matrix:
+        py: ["3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup micromamba (conda-forge)
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-name: build
+          init-shell: bash
+          generate-run-shell: true
+          condarc: |
+            channels:
+              - conda-forge
+            channel_priority: strict
+
+      - name: Force osx-arm64 subdir
+        shell: bash -l {0}
+        run: |
+          conda config --env --set subdir osx-arm64
+          echo "CONDA_SUBDIR=osx-arm64" >> $GITHUB_ENV
+          conda info | sed -n 's/^ *platform: //p'
+          conda config --show subdir
+
+      - name: Install conda-build
+        shell: bash -l {0}
+        run: |
+          micromamba install -y "conda-build>=25" anaconda-client
+
+      - name: Build (py ${{ matrix.py }})
+        shell: bash -l {0}
+        run: |
+          set -eux
+          # Make a tiny variant file on-the-fly so you don’t need .ci_support arm64 files
+          cat > /tmp/variant.yaml <<EOF
+          python:
+            - "${{ matrix.py }}"
+          target_platform:
+            - osx-arm64
+          MACOSX_DEPLOYMENT_TARGET:
+            - "11.0"
+          EOF
+          # (Optional) show final variant
+          cat /tmp/variant.yaml
+          # Build
+          conda build recipe -m /tmp/variant.yaml --no-anaconda-upload
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: osx-arm64-py${{ matrix.py }}
+          path: |
+            ${{ env.MAMBA_ROOT_PREFIX }}/conda-bld/osx-arm64/*.conda
