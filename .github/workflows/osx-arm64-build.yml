@@ -7,7 +7,7 @@ on:
 
 jobs:
   macos-arm64:
-    runs-on: macos-14   # Apple Silicon
+    runs-on: macos-14
     strategy:
       fail-fast: false
       matrix:
@@ -27,24 +27,25 @@ jobs:
               - conda-forge
             channel_priority: strict
 
-      - name: Force osx-arm64 subdir
-        shell: bash -l {0}
-        run: |
-          conda config --env --set subdir osx-arm64
-          echo "CONDA_SUBDIR=osx-arm64" >> $GITHUB_ENV
-          conda info | sed -n 's/^ *platform: //p'
-          conda config --show subdir
-
+      # 1) Install conda (via conda-build) BEFORE using any `conda` commands
       - name: Install conda-build
         shell: bash -l {0}
         run: |
-          micromamba install -y "conda-build>=25" anaconda-client
+          micromamba install -y -n build "conda-build>=25" anaconda-client
+
+      # 2) Now it's safe to call `conda` (through micromamba run)
+      - name: Force osx-arm64 subdir
+        shell: bash -l {0}
+        run: |
+          echo "CONDA_SUBDIR=osx-arm64" >> $GITHUB_ENV
+          micromamba run -n build conda config --env --set subdir osx-arm64
+          micromamba run -n build conda info | sed -n 's/^ *platform: //p'
+          micromamba run -n build conda config --show subdir
 
       - name: Build (py ${{ matrix.py }})
         shell: bash -l {0}
         run: |
           set -eux
-          # Make a tiny variant file on-the-fly so you don’t need .ci_support arm64 files
           cat > /tmp/variant.yaml <<EOF
           python:
             - "${{ matrix.py }}"
@@ -53,10 +54,7 @@ jobs:
           MACOSX_DEPLOYMENT_TARGET:
             - "11.0"
           EOF
-          # (Optional) show final variant
-          cat /tmp/variant.yaml
-          # Build
-          conda build recipe -m /tmp/variant.yaml --no-anaconda-upload
+          micromamba run -n build conda build recipe -m /tmp/variant.yaml --no-anaconda-upload
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -64,3 +62,4 @@ jobs:
           name: osx-arm64-py${{ matrix.py }}
           path: |
             ${{ env.MAMBA_ROOT_PREFIX }}/conda-bld/osx-arm64/*.conda
+            ${{ env.MAMBA_ROOT_PREFIX }}/envs/build/conda-bld/osx-arm64/*.conda
