@@ -1,5 +1,7 @@
 provider:
-  win_64: None       
-build_platform:
-  osx_arm64: osx_64   
-test: native_and_emulated
+  linux_64: azure
+  osx: azure
+  osx_arm64: azure
+  win: None
+
+test: native
