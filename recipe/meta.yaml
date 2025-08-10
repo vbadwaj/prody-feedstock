@@ -8,73 +8,43 @@ package:
 
 source:
   git_url: https://github.com/prody/{{ name }}.git
-  git_tag: v2.6.0
-
+  git_tag: v{{ version }}
 
 build:
   number: 0
   entry_points:
     - prody = prody.apps:prody_main
     - evol = prody.apps:evol_main
-    
 
 requirements:
   build:
-
-    - python 
-    - biopython
-    - requests
-    - setuptools
-    - scipy
-    - pyparsing <=3.1.1
-    - conda-build
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+    - {{ compiler('fortran') }}
+    - cross-python_{{ target_platform }}   # [build_platform != target_platform]
+    - {{ stdlib("c") }}                    # [build_platform != target_platform]
     - pip
-    - numpy >=1.10
-    - cross-python_{{ target_platform }}        # [build_platform != target_platform]
-    - {{ stdlib("c") }}                         # [build_platform != target_platform]
-    - libgfortran5                              # [linux]
-    # - {{ compiler('c') }}
-    # - {{ compiler('cxx') }}
-    # - {{ compiler('fortran') }}
-     
-  
 
   host:
-    - python 
-    - pip >=22
-    - setuptools
-    - numpy >=1.10
-    - scipy
-    - pyparsing <=3.1.1
-    - biopython
-    - requests
-    - {{ compiler('cxx') }}
-    - {{ compiler('c') }}
-    - {{ compiler('fortran') }}
-    # - {{ stdlib("c") }}  # [build_platform != target_platform]
-    - libgfortran                                # [linux]
-  run:
-    - python 
-    - numpy >=1.10
-    - scipy
-    - pyparsing <=3.1.1
-    - biopython
+    - python
     - pip
     - setuptools
+    - numpy {{ numpy }}
+    - scipy
+    - pyparsing <=3.1.1
+    - biopython
     - requests
-    - libgfortran     # [osx]
-    - libgfortran5    # [linux]
+
+  run:
+    - python
+    - {{ pin_compatible('numpy') }}
+    - scipy
+    - pyparsing <=3.1.1
+    - biopython
+    - requests
 
 test:
   requires:
-    - python 
-    - numpy >=1.10
-    - scipy
-    - pyparsing <=3.1.1
-    - biopython
-    - pip
-    - setuptools
-    - requests
     - pytest
     - pytest-xprocess
   commands:
@@ -93,21 +63,12 @@ test:
     - prody.sequence
     - prody.trajectory
 
-
 about:
   home: http://www.bahargroup.org/prody/
   license: MIT
   license_family: MIT
   license_file: LICENSE.rst
   summary: ProDy is a free and open-source Python package for protein structure, dynamics, and sequence analysis, developed by the Bahar lab.
-  description: |
-    ProDy is a free and open-source Python package for protein 
-    structure, dynamics, and sequence analysis, developed by the
-    Bahar lab. It allows for comparative analysis and modeling of 
-    protein structural  dynamics and sequence co-evolution. Fast 
-    and flexible ProDy API is for interactive usage as well as 
-    application development. ProDy also comes with several analysis 
-    applications and a graphical user interface for visual analysis.
   doc_url: http://www.bahargroup.org/prody/manual/
   dev_url: https://github.com/prody/ProDy
 
