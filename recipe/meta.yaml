@@ -52,7 +52,7 @@ requirements:
     - {{ compiler('c') }}
     - {{ compiler('fortran') }}
     # - {{ stdlib("c") }}  # [build_platform != target_platform]
-     - libgfortran                                        # [osx] runtime
+    - libgfortran                                # [linux]
   run:
     - python 
     - numpy >=1.10
