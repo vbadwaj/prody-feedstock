@@ -1,5 +1,5 @@
 {% set name = "prody" %}
-{% set version = "2.5.1" %}
+{% set version = "2.6.0" %}
 {% set python_min = "3.10" %}
 
 package:
@@ -8,7 +8,7 @@ package:
 
 source:
   git_url: https://github.com/prody/{{ name }}.git
-  git_tag: v2.5.1
+  git_tag: v2.6.0
 
 
 build:
@@ -20,7 +20,8 @@ build:
 
 requirements:
   build:
-    - python
+
+    - python 
     - biopython
     - requests
     - setuptools
@@ -28,7 +29,7 @@ requirements:
     - pyparsing <=3.1.1
     - conda-build
     - pip
-    - numpy >=1.10,<2.0
+    - numpy >=1.10
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
     - {{ compiler('fortran') }}
@@ -40,15 +41,19 @@ requirements:
     - python 
     - pip >=22
     - setuptools
-    - numpy >=1.10,<2.0
+    - numpy >=1.10
     - scipy
     - pyparsing <=3.1.1
     - biopython
     - requests
+    - {{ compiler('cxx') }}
+    - {{ compiler('c') }}
+    - {{ compiler('fortran') }}
+    - {{ stdlib("c") }}  # [build_platform != target_platform]
     - libgfortran5
   run:
     - python 
-    - numpy >=1.10,<2.0
+    - numpy >=1.10
     - scipy
     - pyparsing <=3.1.1
     - biopython
@@ -59,7 +64,7 @@ requirements:
 test:
   requires:
     - python 
-    - numpy >=1.10,<2.0
+    - numpy >=1.10
     - scipy
     - pyparsing <=3.1.1
     - biopython
@@ -78,6 +83,7 @@ test:
     - prody.dynamics
     - prody.ensemble
     - prody.kdtree.kdtree
+    - prody.kdtree
     - prody.measure
     - prody.proteins
     - prody.sequence
@@ -106,3 +112,4 @@ extra:
     - AnthonyBogetti
     - jamesmkrieger
     - simonbray
+    - vbadwaj
