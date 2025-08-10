@@ -1,7 +1,9 @@
-provider:
-  linux_64: azure
-  osx: azure
-  osx_arm64: azure
-  win: None
+conda_forge_output_validation: true
+github:
+  branch_name: main
+  tooling_branch_name: main
+conda_build:
+  pkg_format: '2'
 
-test: native
+provider:
+  win_64: None
