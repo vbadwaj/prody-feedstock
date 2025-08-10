@@ -2,7 +2,6 @@ conda_forge_output_validation: true
 provider:
   linux_64: azure
   osx: azure
+  osx_arm64: azure
   win: None
-build_platform:
-  osx_arm64: osx_64
-test: native_and_emulated
+test: native

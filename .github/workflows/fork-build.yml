@@ -1,8 +1,11 @@
-name: Fork build (no upload)
-on: [push, pull_request]
+name: Fork CI
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
 
 jobs:
-  linux-64:
+  linux:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -10,77 +13,39 @@ jobs:
         config: [linux_64_python3.10, linux_64_python3.11, linux_64_python3.12]
     steps:
       - uses: actions/checkout@v4
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-name: build
-          condarc: |
-            channels:
-              - conda-forge
-            channel_priority: strict
-          create-args: >
-            conda-build conda-forge-ci-setup boa python=3.12
-      - name: Build
-        shell: bash -l {0}
+      - name: Build (Linux)
         env:
           CONFIG: ${{ matrix.config }}
           UPLOAD_PACKAGES: "False"
-        run: |
-          set -euxo pipefail
-          setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
-          source run_conda_forge_build_setup
-          conda mambabuild recipe -m .ci_support/${CONFIG}.yaml --no-anaconda-upload
+          CI: github_actions
+        run: ./.scripts/run_docker_build.sh
 
-  osx-arm64:
-    runs-on: macos-14   # Apple Silicon runner
-    strategy:
-      fail-fast: false
-      matrix:
-        config: [osx_arm64_python3.10, osx_arm64_python3.11, osx_arm64_python3.12]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-name: build
-          condarc: |
-            channels:
-              - conda-forge
-            channel_priority: strict
-          create-args: >
-            conda-build conda-forge-ci-setup boa python=3.12
-      - name: Build
-        shell: bash -l {0}
-        env:
-          CONFIG: ${{ matrix.config }}
-          UPLOAD_PACKAGES: "False"
-        run: |
-          set -euxo pipefail
-          setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
-          source run_conda_forge_build_setup
-          conda mambabuild recipe -m .ci_support/${CONFIG}.yaml --no-anaconda-upload
-  osx-64:
-    runs-on: macos-13     # Intel runner
+  macos-x86_64:
+    runs-on: macos-13     # Intel runner; keep if you want x86_64 wheels
     strategy:
       fail-fast: false
       matrix:
         config: [osx_64_python3.10, osx_64_python3.11, osx_64_python3.12]
     steps:
       - uses: actions/checkout@v4
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          environment-name: build
-          condarc: |
-            channels:
-              - conda-forge
-            channel_priority: strict
-          create-args: >
-            conda-build conda-forge-ci-setup boa python=3.12
-      - name: Build
-        shell: bash -l {0}
+      - name: Build (macOS x86_64)
         env:
           CONFIG: ${{ matrix.config }}
           UPLOAD_PACKAGES: "False"
-        run: |
-          set -euxo pipefail
-          setup_conda_rc ./ ./recipe ./.ci_support/${CONFIG}.yaml
-          source run_conda_forge_build_setup
-          conda mambabuild recipe -m .ci_support/${CONFIG}.yaml --no-anaconda-upload
+          CI: github_actions
+        run: ./.scripts/run_osx_build.sh
+
+  macos-arm64:
+    runs-on: macos-latest  # Apple Silicon runner
+    strategy:
+      fail-fast: false
+      matrix:
+        config: [osx_arm64_python3.10, osx_arm64_python3.11, osx_arm64_python3.12]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build (macOS arm64)
+        env:
+          CONFIG: ${{ matrix.config }}
+          UPLOAD_PACKAGES: "False"
+          CI: github_actions
+        run: ./.scripts/run_osx_build.sh
