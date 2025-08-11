@@ -13,15 +13,6 @@ Development: https://github.com/prody/ProDy
 
 Documentation: http://www.bahargroup.org/prody/manual/
 
-ProDy is a free and open-source Python package for protein
-structure, dynamics, and sequence analysis, developed by the
-Bahar lab. It allows for comparative analysis and modeling of
-protein structural  dynamics and sequence co-evolution. Fast
-and flexible ProDy API is for interactive usage as well as
-application development. ProDy also comes with several analysis
-applications and a graphical user interface for visual analysis.
-
-
 Current build status
 ====================
 
