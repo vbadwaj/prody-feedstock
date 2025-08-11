@@ -1,7 +1,3 @@
-# This file was generated automatically from conda-smithy. To update this configuration,
-# update the conda-forge.yml and/or the recipe/meta.yaml.
-# -*- mode: yaml -*-
-
 jobs:
 - job: osx
   pool:
@@ -20,17 +16,19 @@ jobs:
       osx_arm64_python3.10:
         CONFIG: osx_arm64_python3.10
         UPLOAD_PACKAGES: 'True'
+        resourceClass: macos.arm64.8core
       osx_arm64_python3.11:
         CONFIG: osx_arm64_python3.11
         UPLOAD_PACKAGES: 'True'
+        resourceClass: macos.arm64.8core
       osx_arm64_python3.12:
         CONFIG: osx_arm64_python3.12
         UPLOAD_PACKAGES: 'True'
+        resourceClass: macos.arm64.8core
   timeoutInMinutes: 360
   variables: {}
 
   steps:
-  # TODO: Fast finish on azure pipelines?
   - script: |
       export CI=azure
       export flow_run_id=azure_$(Build.BuildNumber).$(System.JobAttempt)
